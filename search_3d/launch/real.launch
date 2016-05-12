@@ -1,0 +1,9 @@
+<launch>
+	
+	<include file="$(find csuro_robots)/launch/sonny.launch"/><!-- esto es para archivos launch-->
+	<node pkg="csuro_tools" type="nodo_hsv_tuner_2d" name="node_hsv"/>
+	<node pkg="rviz" type="rviz" name="turviz"/>
+	<node pkg="csuro_sensors" type="nodo_rgbd_tf" name="nodo_rgbd_tf"/>
+	<node pkg="csuro_sensors" type="nodo_rgbd_filter" name="nodo_rgbd_filter"/>
+	
+</launch>

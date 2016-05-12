@@ -1,0 +1,9 @@
+Header header
+int64 numObjects
+float64[] ro
+float64[] tethaMin
+float64[] tethaMax
+float64[] tethaPeak
+float64[] xPeak
+float64[] yPeak
+int64[] count

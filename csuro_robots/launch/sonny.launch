@@ -1,0 +1,42 @@
+<launch>
+
+  <arg name="urdf_file" default="$(find xacro)/xacro.py '$(find csuro_robots)/definition/sonny/kobuki_hexagons_asus_xtion_pro.urdf.xacro'" />
+  <param name="robot_description" command="$(arg urdf_file)" />
+  
+  <node pkg="nodelet" type="nodelet" name="mobile_base_nodelet_manager" args="manager"/>
+  <node pkg="nodelet" type="nodelet" name="mobile_base" args="load kobuki_node/KobukiNodelet mobile_base_nodelet_manager">
+    <rosparam file="$(find kobuki_node)/param/base.yaml" command="load"/>
+    <remap from="mobile_base/odom" to="odom"/>
+    <!-- Don't do this - force applications to use a velocity mux for redirection
+      <remap from="mobile_base/commands/velocity" to="cmd_vel"/>
+    -->
+    <remap from="mobile_base/enable" to="enable"/>
+    <remap from="mobile_base/disable" to="disable"/>
+    <remap from="mobile_base/joint_states" to="joint_states"/>
+  </node>
+
+  <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" >
+    <rosparam command="load" file="$(find turtlebot_bringup)/param/kobuki/diagnostics.yaml" />
+  </node>
+
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="30.0" />
+  </node>
+
+  <include file="$(find hokuyo_node)/hokuyo_test.launch">
+   </include>  
+ 
+  <node pkg="tf" type="static_transform_publisher" name="bll2laser" args="0.0 0.0 0.06 0 0 0 1 /base_laser_link /laser 100" /> 
+ 
+ <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter">
+    <rosparam command="load" file="$(find csuro_robots)/definition/sonny/my_laser_config.yaml" />
+  </node> 
+ 
+  <include file="$(find openni2_launch)/launch/openni2.launch">
+  	<param name="depth_registration" type="boolean" value="true" />
+   	<arg name="publish_tf" value="false" />
+  </include>
+
+
+ 
+ </launch>

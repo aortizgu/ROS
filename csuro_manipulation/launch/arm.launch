@@ -1,0 +1,13 @@
+<launch>
+
+ 	<arg name="world_name" default="$(find csuro_robots)/worlds/GrannyAnnie.world"/> 
+ 
+ 
+ 	<include file="$(find phantomx_rst)/launch/arm.launch"/>
+  	<include file="$(find phantomx_rst)/launch/arm_rviz.launch"/>
+   	<include file="$(find phantomx_rst)/launch/move_group.launch"/>
+   
+  	<!--<node pkg="csuro_manipulation" type="test_manipulation_node" name="test_manipulation"/>-->
+ 
+ 
+ </launch>
